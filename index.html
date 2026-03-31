@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Digital Signature Pad</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f7f9fc 0%, #eef2f7 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-top: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 18px;
+        }
+        
+        .document-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .info-label {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+        }
+        
+        .info-value {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        #form-reference {
+            width: 150px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .signature-container {
+            margin-bottom: 30px;
+        }
+        
+        .signature-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .signature-title h2 {
+            color: #2c3e50;
+            font-size: 20px;
+        }
+        
+        #clear-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        
+        #clear-btn:hover {
+            background: #c0392b;
+        }
+        
+        #signature-pad {
+            width: 100%;
+            height: 180px;
+            border: 2px dashed #bdc3c7;
+            border-radius: 8px;
+            background: #f8fafc;
+            cursor: crosshair;
+            touch-action: none;
+        }
+        
+        .signature-instructions {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-top: 8px;
+            text-align: center;
+        }
+        
+        .client-info {
+            margin-bottom: 25px;
+        }
+        
+        .client-info h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #34495e;
+            font-weight: 500;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        #save-btn, #download-btn {
+            padding: 14px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+        
+        #save-btn {
+            background: #3498db;
+            color: white;
+        }
+        
+        #save-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        #download-btn {
+            background: #2ecc71;
+            color: white;
+            display: none;
+        }
+        
+        #download-btn:hover {
+            background: #27ae60;
+            transform: translateY(-2px);
+        }
+        
+        .signature-preview {
+            margin-top: 40px;
+            text-align: center;
+            display: none;
+        }
+        
+        .signature-preview h3 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 22px;
+        }
+        
+        #signature-image {
+            max-width: 100%;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 600px) {
+            .document-info {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Digital Signature Verification</h1>
+            <p class="subtitle"></p>
+        </header>
+        
+        <div class="document-info">
+            <div class="info-item">
+                <span class="info-label">Date & Time</span>
+                <span class="info-value" id="current-date">Loading...</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Form Reference #</span>
+                <input type="text" id="form-reference" placeholder="e.g., 10123">
+            </div>
+        </div>
+        
+        <div class="client-info">
+            <h3>Client Information</h3>
+            <div class="form-group">
+                <label for="client-name">Full Name</label>
+                <input type="text" id="client-name" placeholder="Enter client's full name">
+            </div>
+        </div>
+        
+        <div class="signature-container">
+            <div class="signature-title">
+                <h2>Signature</h2>
+                <button id="clear-btn">Clear Signature</button>
+            </div>
+            <canvas id="signature-pad"></canvas>
+            <p class="signature-instructions">Sign above using your mouse or touchscreen</p>
+        </div>
+        
+        <div class="actions">
+            <button id="save-btn">Save Signature</button>
+            <button id="download-btn">Download Signed Document</button>
+        </div>
+        
+        <div class="signature-preview" id="preview-container">
+            <h3>Document Preview</h3>
+            <img id="signature-image" alt="Signed document preview">
+        </div>
+    </div>
+    
+    <footer>
+        <p>This digital signature verifies the authenticity of the signed document</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current date and time
+            function updateDateTime() {
+                const now = new Date();
+                const options = { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                };
+                document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', options);
+            }
+            
+            updateDateTime();
+            setInterval(updateDateTime, 60000); // Update time every minute
+            
+            // Initialize signature canvas
+            const canvas = document.getElementById('signature-pad');
+            const context = canvas.getContext('2d');
+            const clearBtn = document.getElementById('clear-btn');
+            const saveBtn = document.getElementById('save-btn');
+            const downloadBtn = document.getElementById('download-btn');
+            const previewContainer = document.getElementById('preview-container');
+            const signatureImage = document.getElementById('signature-image');
+            
+            // Set canvas size
+            function resizeCanvas() {
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+            }
+            
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+            
+            // Set drawing style
+            context.strokeStyle = '#000000';
+            context.lineWidth = 2;
+            context.lineCap = 'round';
+            context.lineJoin = 'round';
+            
+            let isDrawing = false;
+            let lastX = 0;
+            let lastY = 0;
+            
+            // Drawing functions
+            function startDrawing(e) {
+                isDrawing = true;
+                [lastX, lastY] = [e.offsetX, e.offsetY];
+            }
+            
+            function draw(e) {
+                if (!isDrawing) return;
+                
+                context.beginPath();
+                context.moveTo(lastX, lastY);
+                context.lineTo(e.offsetX, e.offsetY);
+                context.stroke();
+                
+                [lastX, lastY] = [e.offsetX, e.offsetY];
+            }
+            
+            function stopDrawing() {
+                isDrawing = false;
+            }
+            
+            // Mouse events
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing);
+            
+            // Touch events for mobile devices
+            canvas.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const rect = canvas.getBoundingClientRect();
+                const mouseEvent = new MouseEvent('mousedown', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                canvas.dispatchEvent(mouseEvent);
+            });
+            
+            canvas.addEventListener('touchmove', function(e) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const mouseEvent = new MouseEvent('mousemove', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                canvas.dispatchEvent(mouseEvent);
+            });
+            
+            canvas.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                const mouseEvent = new MouseEvent('mouseup', {});
+                canvas.dispatchEvent(mouseEvent);
+            });
+            
+            // Clear canvas
+            clearBtn.addEventListener('click', function() {
+                context.clearRect(0, 0, canvas.width, canvas.height);
+            });
+            
+            // Save signature and generate document
+            saveBtn.addEventListener('click', function() {
+                if (isCanvasBlank(canvas)) {
+                    alert('Please provide your signature first.');
+                    return;
+                }
+                
+                const formRef = document.getElementById('form-reference').value || 'N/A';
+                const clientName = document.getElementById('client-name').value || 'Client';
+                const dateTime = document.getElementById('current-date').textContent;
+                
+                // Create a temporary canvas for the document
+                const docCanvas = document.createElement('canvas');
+                docCanvas.width = 800;
+                docCanvas.height = 600;
+                const docCtx = docCanvas.getContext('2d');
+                
+                // Fill with white background
+                docCtx.fillStyle = '#ffffff';
+                docCtx.fillRect(0, 0, docCanvas.width, docCanvas.height);
+                
+                // Add document title
+                docCtx.fillStyle = '#2c3e50';
+                docCtx.font = 'bold 28px Segoe UI';
+                docCtx.textAlign = 'center';
+                docCtx.fillText('OFFICIAL SIGNED DOCUMENT', docCanvas.width / 2, 60);
+                
+                // Add form reference
+                docCtx.font = '18px Segoe UI';
+                docCtx.textAlign = 'left';
+                docCtx.fillText('Form Reference: ' + formRef, 50, 110);
+                
+                // Add date and time
+                docCtx.fillText('Date & Time: ' + dateTime, 50, 140);
+                
+                // Add client information
+                docCtx.fillText('Client: ' + clientName, 50, 170);
+                
+                // Add signature title
+                docCtx.fillText('Signature Below Line:', 50, 220);
+                
+                // Draw line
+                docCtx.beginPath();
+                docCtx.moveTo(50, 230);
+                docCtx.lineTo(750, 230);
+                docCtx.strokeStyle = '#bdc3c7';
+                docCtx.stroke();
+                
+                // Draw the signature
+                const signatureData = canvas.toDataURL();
+                const signatureImg = new Image();
+                signatureImg.onload = function() {
+                    docCtx.drawImage(signatureImg, 50, 250, 700, 150);
+                    
+                    // Add verification text
+                    docCtx.font = 'italic 16px Segoe UI';
+                    docCtx.fillStyle = '#7f8c8d';
+                    docCtx.textAlign = 'center';
+                    docCtx.fillText('This document was digitally signed and verified on ' + dateTime, docCanvas.width / 2, 450);
+                    
+                    docCtx.fillText('Form Reference: ' + formRef + ' | Client: ' + clientName, docCanvas.width / 2, 480);
+                    
+                    // Convert to image and display
+                    const dataURL = docCanvas.toDataURL('image/png');
+                    signatureImage.src = dataURL;
+                    previewContainer.style.display = 'block';
+                    downloadBtn.style.display = 'block';
+                    
+                    // Set download link
+                    downloadBtn.onclick = function() {
+                        const link = document.createElement('a');
+                        link.download = 'signed_document_' + formRef + '.png';
+                        link.href = dataURL;
+                        link.click();
+                    };
+                };
+                signatureImg.src = signatureData;
+            });
+            
+            // Check if canvas is blank
+            function isCanvasBlank(canvas) {
+                const blank = document.createElement('canvas');
+                blank.width = canvas.width;
+                blank.height = canvas.height;
+                return canvas.toDataURL() === blank.toDataURL();
+            }
+        });
+    </script>
+</body>
+</html>
